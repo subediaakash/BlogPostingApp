@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import jwt, { Secret } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import "dotenv/config";
+import { JWT_SECRET } from "../env";
 
 const prisma = new PrismaClient();
 
@@ -35,10 +36,7 @@ export const Signup = async (req: Request, res: Response) => {
       data: data,
     });
 
-    const token = jwt.sign(
-      { email: email, id: newUser.id },
-      process.env.JWT_SECRET as Secret
-    );
+    const token = jwt.sign({ email: email, id: newUser.id }, JWT_SECRET);
 
     return res
       .status(200)
